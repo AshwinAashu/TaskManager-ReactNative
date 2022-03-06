@@ -11,6 +11,7 @@ const NewTaskModal = ({closeModal}) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false); 
     const [text, setText] = useState('');
+    const [time, setTime] = useState(new Date());
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -20,6 +21,7 @@ const NewTaskModal = ({closeModal}) => {
         let tempDate =  new Date(currentDate);
         let formatDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1)  +'/' + tempDate.getFullYear(); 
         let formatTime = tempDate.getHours() + ':' + tempDate.getMinutes();
+        setTime(formatTime);
         setText(formatDate+' @ '+formatTime);
         console.log(formatDate+'\n'+formatTime);
     }
@@ -58,12 +60,12 @@ const NewTaskModal = ({closeModal}) => {
                             icon={faClock}
                             size={30}
                             color="white"
-                            onPress={()=>{setMode('time')}}
+                            onPress={()=>{showMode('time')}}
                         />
                         
                     </View>
                     <View style={styles.modalFootertwo}>
-                        <Text style={styles.modalFooterText}> The text{text}</Text>
+                        <Text style={styles.modalFooterText}> {text}</Text>
                     </View>
                 </View>
                 <View style={styles.modalFooterControls}>
@@ -105,7 +107,7 @@ const NewTaskModal = ({closeModal}) => {
 
 const styles =  StyleSheet.create({
     modalOverview: {
-        zIndex: 999,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#000',
@@ -151,11 +153,11 @@ const styles =  StyleSheet.create({
     },
     modalFootertwo: {
         width: '40%',
-        borderWidth:0.2,
+        
     },
     modalFooterText: {
         color: 'white',
-        fontSize: 20,
+        fontSize: 16,
     },
     modalFooterControls: {
         marginTop:20,

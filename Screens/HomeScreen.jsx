@@ -57,10 +57,9 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   containerMain: {
     backgroundColor: '#dedede',
-    // marginBottom: 20,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '20%',
   },
   containerHeader: {
     alignItems: 'center',
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginBottom: 20,
-    position: 'absolute',
+    position: 'relative',
     // justifyContent: 'space-between',
   },
   headerContainer: {
@@ -104,13 +103,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     left: '75%',
-    top: '65%',
+    top: '75%',
     
     
     // marginBottom: '5%',
   },
   addItem:{
-    zIndex: 1,
+    // zIndex: 1,
     width:60,
     height:60,
     backgroundColor: '#0db89e',
