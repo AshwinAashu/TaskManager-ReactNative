@@ -118,7 +118,7 @@ const styles= StyleSheet.create({
     button: {
         backgroundColor: '#69a0ff',
         width:'60%',
-        padding:5,
+        padding:10,
         borderRadius: 10,
         borderColor: 'blue',
         borderWidth: 1,
@@ -128,11 +128,10 @@ const styles= StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
         fontWeight:'700',
-        fontSize:15,
+        fontSize:20,
     },
     buttonSecondary: {
         backgroundColor: '#fff',
-        
     },
     buttonTextSecondary:{
         color: '#69a0ff',

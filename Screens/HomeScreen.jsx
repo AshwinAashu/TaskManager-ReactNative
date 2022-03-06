@@ -1,12 +1,21 @@
-import React, { useEffect , useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native' ; 
+import React, {  useState } from 'react';
+import { View, Text, StyleSheet, Modal } from 'react-native' ; 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
+import NewTaskModal from './Modal/NewTaskModal';
 // import { StatusBar } from 'expo-status-bar';
 
 
 
 const HomeScreen = () => {
+  
+  const [showModal, setShowModal] = useState(false);
+  const [taskListData, setTaskListData] = useState([]);
+
+  const closeModal = () => {
+    setShowModal(false);
+  }
+
   return (
     <View style={styles.containerMain}>
       <View style={styles.containerHeader}>
@@ -30,10 +39,17 @@ const HomeScreen = () => {
 
         <View style={styles.addItemContainer}>
           <View style={styles.addItem}>
-            <FontAwesomeIcon icon={faPlus} size={20} color="white" />
+            <FontAwesomeIcon 
+              icon={faPlus} 
+              size={20}
+              color="white"
+              onPress={()=>{setShowModal(true)}} />
           </View>
         </View>
       </View>
+      <Modal visible={showModal} animationType="slide" transparent={true}>
+          <NewTaskModal closeModal={closeModal}/>
+      </Modal>
     </View>
   )
 }
@@ -55,6 +71,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginBottom: 20,
+    position: 'absolute',
     // justifyContent: 'space-between',
   },
   headerContainer: {
