@@ -1,5 +1,5 @@
 import React, {  useState  } from 'react';
-import { View, Text, StyleSheet, Modal, KeyboardAvoidingView } from 'react-native' ; 
+import { View, Text, StyleSheet, Modal, ScrollView } from 'react-native' ; 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
 import NewTaskModal from './Modal/NewTaskModal';
@@ -11,6 +11,7 @@ const HomeScreen = () => {
   
   const [showModal, setShowModal] = useState(false);
   const [taskListData, setTaskListData] = useState([]);
+  const [objTask, setObjTask] = useState({});
 
   const closeModal = () => {
    
@@ -26,6 +27,27 @@ const HomeScreen = () => {
       return c-d
     })
     setTaskListData(tlist);
+    /* Convert the array of objects to object with date.toDateString() as the key
+    see if the date key exists before actually adding any elements to it. 
+    */
+   let taskObj = {};
+    tlist.forEach(taskItem => {
+      
+      taskItem.taskDate = new Date(taskItem.taskDate)
+      if(taskObj[taskItem.taskDate.toDateString()]){
+        taskObj[taskItem.taskDate.toDateString()].push(taskItem);
+      }else{
+        taskObj[taskItem.taskDate.toDateString()] = [taskItem]; 
+      }
+    });
+    console.log(taskObj);
+    setObjTask(taskObj);
+    
+
+    // setObjTask(taskObj);
+    // console.log(taskObj);
+      
+    
   }
   
   return (
@@ -48,7 +70,7 @@ const HomeScreen = () => {
       <View style ={styles.feedContainer}>
         <View style={styles.feedItem}>
           {/* {console.log('check',tlist)} */}
-          {
+          {/*
             taskListData.map((tasks,index)=>{
               return (
                 <View key={index} style={styles.feedItemHeader}>
@@ -57,14 +79,35 @@ const HomeScreen = () => {
                     <View style={styles.feedItemCardContents}>
                       <Text style={styles.taskTextField}>{tasks.taskText}</Text>
                       <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
-                      {/* icon to mark completion of task */}
+                      
                     </View>
                   </View>
                 </View>
               )
               
             })
-          }
+          */}
+
+          {/* rendering thorough the task object */}
+          {Object.keys(objTask).map((key,index)=>{
+            return (
+              <View key={index} style={styles.feedItemHeader}>
+                <Text style={styles.taskDateText}>{key}</Text>
+                <View style={styles.feedItemCard}>
+                  {objTask[key].map((tasks,index)=>{
+                    return (
+                      <View key={index} style={styles.feedItemCardContents}>
+                        <Text style={styles.taskTextField}>{tasks.taskText}</Text>
+                        <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
+                        
+                      </View>
+                    )
+                  })}
+                </View>
+              </View>
+            )
+          })} 
+
         </View>
 
         <View style={styles.addItemContainer}>
@@ -176,6 +219,12 @@ const styles = StyleSheet.create({
     borderLeftColor:'red',
     borderLeftWidth:5,
     
+  },
+  feedItemCardContents:{
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
 })
