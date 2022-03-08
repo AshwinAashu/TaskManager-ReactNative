@@ -3,38 +3,64 @@ import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, TouchableOpaci
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendar , faClock } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown } from 'react-native-element-dropdown';
 
-const NewTaskModal = ({closeModal}) => {
-    const [taskData, setTaskData] = useState();
+const NewTaskModal = ({closeModal, addTaskHandler}) => {
+    // const [taskData, setTaskData] = useState();
     const [taskText, setTaskText] = useState('');
     const [date,setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false); 
     const [text, setText] = useState('');
-    const [time, setTime] = useState(new Date());
+    const [time, setTime] = useState('');
+    const [priority, setPriority] = useState('');
+    const [isFocus, setIsFocus] = useState(false);
+
+
+    const priorityData = [
+        {label : 'High' , value : 'High'},
+        {label:'Medium', value:  'Medium'},
+        {label: 'Low' , value : 'Low'},
+    ];
 
     const onChange = (event, selectedDate) => {
+        
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
-
+        
         let tempDate =  new Date(currentDate);
         let formatDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1)  +'/' + tempDate.getFullYear(); 
         let formatTime = tempDate.getHours() + ':' + tempDate.getMinutes();
-        setTime(formatTime);
+        setTime(currentDate.toTimeString().substring(0,5));
+        // console.log(currentDate.toTimeString().substring(0,5));
         setText(formatDate+' @ '+formatTime);
-        console.log(formatDate+'\n'+formatTime);
+        // console.log(formatDate+'\n'+formatTime);
+        // console.log(currentDate);
     }
 
     const showMode = (currentMode) =>{
         setShow(true);
         setMode(currentMode);
     }
+
+    // const renderLabel = () => {
+    //     if (priority || isFocus) {
+    //       return (
+    //         <Text style={[styles.label, isFocus && { color: 'white' }]}>
+    //           Choose Priority
+    //         </Text>
+    //       );
+    //     }
+    //     return null;
+    // };
   
 
     return (
-        <KeyboardAvoidingView style={styles.modalOverview}  behavior="padding">
-            {/* onPress={()=>closeModal()} */}
+        <KeyboardAvoidingView
+            style={styles.modalOverview}  
+            behavior="padding">
+           
             <View style={styles.modalContainer}>
                 <View style={styles.modalHeader}>
 
@@ -65,29 +91,53 @@ const NewTaskModal = ({closeModal}) => {
                         
                     </View>
                     <View style={styles.modalFootertwo}>
-                        <Text style={styles.modalFooterText}> {text}</Text>
+                        
+                        <View style={styles.modalFooterDropdown}>
+                          
+                            <Dropdown 
+                                style={styles.dropdownmenu}
+                                onChange={(item)=>{setPriority(item)}}
+                                data={priorityData}
+                                defaultValue='Select Priority'
+                                labelField='label'
+                                valueField='value'
+                                value={priority}
+                                onFocus={()=>{setIsFocus(true)}}  
+                                placeholder={!isFocus? 'Task Priority' : priority.value}
+                                
+                            />
+                        </View>
+
+                        <Text style={styles.modalFooterText}> {text !== ''? text  :'Date & Time'}</Text>
+
                     </View>
                 </View>
                 <View style={styles.modalFooterControls}>
                     <TouchableOpacity style={styles.button}
-                        onPress={()=>{setTaskData({
-                            taskText: taskText,
-                            date: date,
-                            time: time,
-                            priority :'' ,
-                            status: 'pending',
-                            
-                        })}}
+                        onPress={()=> { addTaskHandler( 
+                            {
+                            'taskText': taskText,
+                            'taskDate': date.toDateString(),
+                            'taskTime': time,
+                            'taskPriority' : priority.value ,
+                            'taskStatus': 'pending',
+                            }
+                        )
+                            closeModal() 
+                        }}
                     >
+                        
                         <Text style={styles.buttonText}>Add Task</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.button, styles.buttonSecondary]}
                         onPress={()=>{closeModal()}}
                     >
-                        <Text style={styles.buttonText}>Cancel</Text>
+                        <Text style={styles.buttonTextsecondary}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
+
+
                 {show && (
                     <DateTimePicker
                     testID="dateTimePicker"
@@ -117,8 +167,8 @@ const styles =  StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: '#0db89e',
-        width: '70%',
-        height: '40%',
+        width: '90%',
+        minHeight: '40%',
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
@@ -140,24 +190,30 @@ const styles =  StyleSheet.create({
     modalFooterIcon: {
         width: '80%',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
     },
     modalFooterOne: {
-        width: '40%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         
     },
     modalFootertwo: {
-        width: '40%',
+        
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        width: '100%',
         
     },
     modalFooterText: {
         color: 'white',
         fontSize: 16,
+        width:'90%',
+        textAlign: 'center',
     },
     modalFooterControls: {
         marginTop:20,
@@ -169,20 +225,49 @@ const styles =  StyleSheet.create({
         marginBottom: 20,
     },
     button: {
-        width: '40%',
+        width: '45%',
+        height: '60%',
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
         backgroundColor: '#0db89e',
         borderRadius:10,
-       
         borderColor: 'white',    
+    
     },
 
     buttonSecondary: {
         backgroundColor: 'white',
-        borderColor: '#0db89e',
+        borderColor: 'red',
+        borderWidth: 2,
     },
+    buttonText: {
+        color: 'white',
+        fontWeight: '700',
+        fontSize: 18,
+
+    },
+    buttonTextsecondary: {
+        color: 'red',
+        fontWeight: '500',
+        fontSize: 16,
+    },
+    modalFooterDropdown:{
+        marginTop:10,
+        width: '100%',
+        
+    },
+
+    dropdownmenu: {
+        backgroundColor:'#fff',
+        marginBottom: 20,
+        marginHorizontal: 10,
+        height: 40,
+        borderRadius: 10,
+    },
+    
+
+    
 })
 
 export default NewTaskModal;

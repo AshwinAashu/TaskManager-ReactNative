@@ -1,5 +1,5 @@
 import React, {  useState } from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native' ; 
+import { View, Text, StyleSheet, Modal, KeyboardAvoidingView } from 'react-native' ; 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
 import NewTaskModal from './Modal/NewTaskModal';
@@ -16,6 +16,17 @@ const HomeScreen = () => {
     setShowModal(false);
   }
 
+  const addTaskHandler = (taskData) => {
+    setTaskListData([...taskListData, taskData]);
+
+    // setTaskListData(prevTaskListData => {
+    //   return [...prevTaskListData, taskData];
+    // });
+    
+    console.log('........');
+    console.log(taskData);
+  }
+  
   return (
     <View style={styles.containerMain}>
       <View style={styles.containerHeader}>
@@ -35,20 +46,41 @@ const HomeScreen = () => {
 
       <View style ={styles.feedContainer}>
         <View style={styles.feedItem}>
+          {console.log(taskListData)}
+          {
+            taskListData.map((tasks,index)=>{
+              return (
+                <View key={index} style={styles.feedItemHeader}>
+                  <Text style={styles.taskDateText}>{tasks.taskDate}</Text>
+                  <View style={styles.feedItemCard}>
+                    <View style={styles.feedItemCardContents}>
+                      <Text style={styles.taskTextField}>{tasks.taskText}</Text>
+                      <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
+                      {/* icon to mark completion of task */}
+                    </View>
+                  </View>
+                </View>
+              )
+              
+            })
+          }
         </View>
 
         <View style={styles.addItemContainer}>
-          <View style={styles.addItem}>
+          <View style={styles.addItem} >
             <FontAwesomeIcon 
               icon={faPlus} 
               size={20}
               color="white"
-              onPress={()=>{setShowModal(true)}} />
+              onPress={()=>{setShowModal(true)}}
+               />
           </View>
         </View>
       </View>
       <Modal visible={showModal} animationType="slide" transparent={true}>
-          <NewTaskModal closeModal={closeModal}/>
+          <NewTaskModal 
+            closeModal={closeModal} 
+            addTaskHandler={ addTaskHandler }/>
       </Modal>
     </View>
   )
@@ -100,8 +132,10 @@ const styles = StyleSheet.create({
   },
   addItemContainer:{
     
-    flex: 1,
+    // flex: 1,
+    zIndex: 10000,
     justifyContent: 'flex-start',
+    position: 'absolute',
     left: '75%',
     top: '75%',
     
@@ -109,7 +143,7 @@ const styles = StyleSheet.create({
     // marginBottom: '5%',
   },
   addItem:{
-    // zIndex: 1,
+   
     width:60,
     height:60,
     backgroundColor: '#0db89e',
@@ -117,6 +151,27 @@ const styles = StyleSheet.create({
     alignItems : 'center',
     borderRadius: 30,
     
+  },
+  feedItem:{
+    // flex: 4,
+    width: '100%',
+    // height: '100%',
+  },
+  feedItemHeader:{
+    // width: '100%',
+    backgroundColor: '#dedede',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginTop: '50%',
+  },
+  feedItemCard:{
+    width: '95%',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,  
   },
 
 })
