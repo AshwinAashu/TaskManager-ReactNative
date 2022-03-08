@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useState  } from 'react';
 import { View, Text, StyleSheet, Modal, KeyboardAvoidingView } from 'react-native' ; 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
@@ -13,18 +13,19 @@ const HomeScreen = () => {
   const [taskListData, setTaskListData] = useState([]);
 
   const closeModal = () => {
+   
     setShowModal(false);
   }
 
   const addTaskHandler = (taskData) => {
-    setTaskListData([...taskListData, taskData]);
-
-    // setTaskListData(prevTaskListData => {
-    //   return [...prevTaskListData, taskData];
-    // });
-    
-    console.log('........');
-    console.log(taskData);
+    let tlist = [...taskListData, taskData];
+    // setTaskListData([...taskListData, taskData]);
+    tlist = tlist.sort(function(a, b) {
+      var c = new Date(a.taskDate);
+      var d = new Date(b.taskDate);
+      return c-d
+    })
+    setTaskListData(tlist);
   }
   
   return (
@@ -46,7 +47,7 @@ const HomeScreen = () => {
 
       <View style ={styles.feedContainer}>
         <View style={styles.feedItem}>
-          {console.log(taskListData)}
+          {/* {console.log('check',tlist)} */}
           {
             taskListData.map((tasks,index)=>{
               return (
@@ -169,9 +170,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     padding: 10,  
+    borderLeftColor:'red',
+    borderLeftWidth:5,
+    
   },
 
 })

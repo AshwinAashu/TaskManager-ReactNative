@@ -36,7 +36,7 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
         // console.log(currentDate.toTimeString().substring(0,5));
         setText(formatDate+' @ '+formatTime);
         // console.log(formatDate+'\n'+formatTime);
-        // console.log(currentDate);
+        console.log(date);
     }
 
     const showMode = (currentMode) =>{
@@ -117,9 +117,9 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
                         onPress={()=> { addTaskHandler( 
                             {
                             'taskText': taskText,
-                            'taskDate': date.toDateString(),
+                            'taskDate': `${date}`,
                             'taskTime': time,
-                            'taskPriority' : priority.value ,
+                            'taskPriority' : priority.value ? priority.value : 'Low' ,
                             'taskStatus': 'pending',
                             }
                         )
