@@ -120,7 +120,7 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
                             'taskDate': `${date}`,
                             'taskTime': time,
                             'taskPriority' : priority.value ? priority.value : 'Low' ,
-                            'taskStatus': 'pending',
+                            'taskStatus': false,
                             }
                         )
                             closeModal() 

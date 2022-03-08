@@ -1,7 +1,7 @@
 import React, {  useState  } from 'react';
 import { View, Text, StyleSheet, Modal, ScrollView } from 'react-native' ; 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faBars, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import NewTaskModal from './Modal/NewTaskModal';
 // import { StatusBar } from 'expo-status-bar';
 
@@ -12,6 +12,7 @@ const HomeScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [taskListData, setTaskListData] = useState([]);
   const [objTask, setObjTask] = useState({});
+  
 
   const closeModal = () => {
    
@@ -94,12 +95,18 @@ const HomeScreen = () => {
               <View key={index} style={styles.feedItemHeader}>
                 <Text style={styles.taskDateText}>{key}</Text>
                 <View style={styles.feedItemCard}>
-                  {objTask[key].map((tasks,index)=>{
+                  {objTask[key].map((tasks,deepIndex)=>{
                     return (
-                      <View key={index} style={styles.feedItemCardContents}>
+                      <View key={deepIndex} style={styles.feedItemCardContents}>
                         <Text style={styles.taskTextField}>{tasks.taskText}</Text>
                         <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
+                        <FontAwesomeIcon 
+                          icon={faCheckCircle}
+                          size={20} 
+                          onPress={()=> tasks.taskStatus = !tasks.taskStatus}
+                          color={ tasks.taskStatus ? 'green' : 'gray'} 
                         
+                        />
                       </View>
                     )
                   })}
@@ -225,6 +232,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    margin: '3%',
   },
 
 })
