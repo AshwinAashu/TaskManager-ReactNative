@@ -61,6 +61,7 @@ const HomeScreen = () => {
 
 
   return (
+    
     <View style={styles.containerMain}>
       <View style={styles.containerHeader}>
 
@@ -76,18 +77,22 @@ const HomeScreen = () => {
       
         </View>
       </View>
-
+      
       <View style ={styles.feedContainer}>
+      <ScrollView>
         <View style={styles.feedItem}>
           {/* rendering thorough the task object */}
+          
           {Object.keys(objTask).map((key,index)=>{
             return (
+              
               <View key={index} style={styles.feedItemHeader}>
                 <Text style={styles.taskDateText}>{key}</Text>
                 <View style={styles.feedItemCard}>
-                  {objTask[key].map((tasks,deepIndex)=>{
+                  {objTask[key].map((tasks)=>{
                     return (
-                      <View key={deepIndex} style={styles.feedItemCardContents}>
+                      
+                      <View key={tasks.taskId} style={styles.feedItemCardContents}>
                         <Text 
                           style={tasks.taskStatus ? [styles.taskTextField, styles.taskCompleteText ] : styles.taskTextField}
                         >{tasks.taskText}</Text>
@@ -111,15 +116,19 @@ const HomeScreen = () => {
                           />
                         </View>
                       </View>
+                     
                     )
                   })}
+                 
                 </View>
               </View>
+              
             )
+            
           })} 
-
+         
         </View>
-
+      </ScrollView>
         <View style={styles.addItemContainer}>
           <View style={styles.addItem} >
             <FontAwesomeIcon 
@@ -131,12 +140,15 @@ const HomeScreen = () => {
           </View>
         </View>
       </View>
+      
       <Modal visible={showModal} animationType="slide" transparent={true}>
           <NewTaskModal 
             closeModal={closeModal} 
             addTaskHandler={ addTaskHandler }/>
       </Modal>
+      
     </View>
+    
   )
 }
 
@@ -233,7 +245,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    width:'40%',
+    width:'30%',
+    marginRight: '15%',
   },
   taskDateText:{
     fontSize: 14,
