@@ -1,7 +1,7 @@
 import React, {  useState  } from 'react';
 import { View, Text, StyleSheet, Modal, ScrollView } from 'react-native' ; 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlus, faBars, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faBars, faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import NewTaskModal from './Modal/NewTaskModal';
 // import { StatusBar } from 'expo-status-bar';
 
@@ -99,14 +99,21 @@ const HomeScreen = () => {
                     return (
                       <View key={deepIndex} style={styles.feedItemCardContents}>
                         <Text style={styles.taskTextField}>{tasks.taskText}</Text>
-                        <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
-                        <FontAwesomeIcon 
-                          icon={faCheckCircle}
-                          size={20} 
-                          onPress={()=> tasks.taskStatus = !tasks.taskStatus}
-                          color={ tasks.taskStatus ? 'green' : 'gray'} 
-                        
-                        />
+                        <View style= {styles.taskControls}>
+                          <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
+                          <FontAwesomeIcon 
+                            icon={faCheckCircle}
+                            size={20} 
+                            onPress={()=> tasks.taskStatus = !tasks.taskStatus}
+                            color={ tasks.taskStatus ? 'green' : 'gray'} 
+                          />
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            size={20}
+                            onPress={()=>{return null}}
+                            color="red"
+                          />
+                        </View>
                       </View>
                     )
                   })}
@@ -233,6 +240,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: '3%',
+  },
+  taskControls:{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width:'50%',
   },
 
 })
