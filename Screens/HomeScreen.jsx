@@ -15,25 +15,23 @@ const HomeScreen = () => {
   
 
   const closeModal = () => {
-   
     setShowModal(false);
   }
 
   const addTaskHandler = (taskData) => {
     let tlist = [...taskListData, taskData];
-    // setTaskListData([...taskListData, taskData]);
     tlist = tlist.sort(function(a, b) {
       var c = new Date(a.taskDate);
       var d = new Date(b.taskDate);
       return c-d
     })
     setTaskListData(tlist);
-    /* Convert the array of objects to object with date.toDateString() as the key
-    see if the date key exists before actually adding any elements to it. 
-    */
-   let taskObj = {};
-    tlist.forEach(taskItem => {
-      
+    setObjTask(taskObjectConstructor(tlist));  
+  }
+
+  const taskObjectConstructor = (taskData) => {
+    let taskObj = {};
+    taskData.forEach(taskItem => {
       taskItem.taskDate = new Date(taskItem.taskDate)
       if(taskObj[taskItem.taskDate.toDateString()]){
         taskObj[taskItem.taskDate.toDateString()].push(taskItem);
@@ -41,16 +39,27 @@ const HomeScreen = () => {
         taskObj[taskItem.taskDate.toDateString()] = [taskItem]; 
       }
     });
-    console.log(taskObj);
-    setObjTask(taskObj);
-    
+    return taskObj;
+  }
 
-    // setObjTask(taskObj);
-    // console.log(taskObj);
-      
-    
+  const handleDeleteTask = (targetTaskId) => {
+    let tlist = [...taskListData];
+    tlist = tlist.filter(taskItem => taskItem.taskId !== targetTaskId);
+    setTaskListData(tlist);
+    setObjTask(taskObjectConstructor(tlist));
   }
   
+  const handleUpdateTask = (targetTaskId) => {
+    let tlist = [...taskListData];
+
+    let targetTask = tlist.find(taskItem => taskItem.taskId === targetTaskId);
+    targetTask.taskStatus = !targetTask.taskStatus;
+    setTaskListData(tlist);
+    setObjTask(taskObjectConstructor(tlist));
+
+  }
+
+
   return (
     <View style={styles.containerMain}>
       <View style={styles.containerHeader}>
@@ -70,25 +79,6 @@ const HomeScreen = () => {
 
       <View style ={styles.feedContainer}>
         <View style={styles.feedItem}>
-          {/* {console.log('check',tlist)} */}
-          {/*
-            taskListData.map((tasks,index)=>{
-              return (
-                <View key={index} style={styles.feedItemHeader}>
-                  <Text style={styles.taskDateText}>{tasks.taskDate}</Text>
-                  <View style={styles.feedItemCard}>
-                    <View style={styles.feedItemCardContents}>
-                      <Text style={styles.taskTextField}>{tasks.taskText}</Text>
-                      <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
-                      
-                    </View>
-                  </View>
-                </View>
-              )
-              
-            })
-          */}
-
           {/* rendering thorough the task object */}
           {Object.keys(objTask).map((key,index)=>{
             return (
@@ -104,14 +94,17 @@ const HomeScreen = () => {
                           <FontAwesomeIcon 
                             icon={faCheckCircle}
                             size={20} 
-                            onPress={()=> tasks.taskStatus = !tasks.taskStatus}
-                            color={ tasks.taskStatus ? 'green' : 'gray'} 
+                            onPress={()=> {
+                              handleUpdateTask(tasks.taskId)
+                            }}
+                            style={tasks.taskStatus ? styles.taskCompleteStyle: styles.taskIncompleteStyle}
+                            // color={ tasks.taskStatus ?  '#87ffb5' : 'gray'} 
                           />
                           <FontAwesomeIcon
                             icon={faTrash}
                             size={20}
-                            onPress={()=>{return null}}
-                            color="red"
+                            onPress={()=>{ handleDeleteTask(tasks.taskId)}}
+                            color="#fa413e"
                           />
                         </View>
                       </View>
@@ -220,6 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#dedede',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
     // marginTop: '50%',
   },
   feedItemCard:{
@@ -245,8 +239,28 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    width:'50%',
+    alignItems: 'center',
+    width:'40%',
   },
+  taskDateText:{
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#6a6b6a',
+    textAlign:'left',
+    width: '90%',
+    marginTop: '2%',
+  },
+  taskTextField:{
+    fontSize: 20,
+    width: '50%',
+  },
+  taskCompleteStyle:{
+    color: 'green',
+    
+  },
+  taskIncompleteStyle:{
+    color:'gray',
+  }
 
 })
 

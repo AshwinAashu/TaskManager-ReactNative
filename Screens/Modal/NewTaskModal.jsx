@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendar , faClock } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'react-native-element-dropdown';
+import  uuid  from 'react-native-uuid';
 
 const NewTaskModal = ({closeModal, addTaskHandler}) => {
     // const [taskData, setTaskData] = useState();
@@ -15,7 +16,8 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
     const [time, setTime] = useState('');
     const [priority, setPriority] = useState('');
     const [isFocus, setIsFocus] = useState(false);
-
+    const tid = uuid.v4();
+    
 
     const priorityData = [
         {label : 'High' , value : 'High'},
@@ -36,7 +38,7 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
         // console.log(currentDate.toTimeString().substring(0,5));
         setText(formatDate+' @ '+formatTime);
         // console.log(formatDate+'\n'+formatTime);
-        console.log(date);
+        // console.log(date);
     }
 
     const showMode = (currentMode) =>{
@@ -116,6 +118,7 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
                     <TouchableOpacity style={styles.button}
                         onPress={()=> { addTaskHandler( 
                             {
+                            'taskId': tid ,
                             'taskText': taskText,
                             'taskDate': `${date}`,
                             'taskTime': time,
