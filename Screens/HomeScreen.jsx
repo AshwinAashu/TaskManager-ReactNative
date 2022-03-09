@@ -88,7 +88,10 @@ const HomeScreen = () => {
                   {objTask[key].map((tasks,deepIndex)=>{
                     return (
                       <View key={deepIndex} style={styles.feedItemCardContents}>
-                        <Text style={styles.taskTextField}>{tasks.taskText}</Text>
+                        <Text 
+                          style={tasks.taskStatus ? [styles.taskTextField, styles.taskCompleteText ] : styles.taskTextField}
+                        >{tasks.taskText}</Text>
+
                         <View style= {styles.taskControls}>
                           <Text style={styles.taskTimeField}>{tasks.taskTime}</Text>
                           <FontAwesomeIcon 
@@ -154,7 +157,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20,
     position: 'relative',
-    // justifyContent: 'space-between',
   },
   headerContainer: {
     width: '80%',
@@ -169,7 +171,6 @@ const styles = StyleSheet.create({
     marginRight: '25%',
   },
   headerOptions: {
-    // backgroundColor: '#000',
     width: '20%',
     marginTop: '5%',
     marginLeft: '5%',
@@ -182,16 +183,12 @@ const styles = StyleSheet.create({
    
   },
   addItemContainer:{
-    
-    // flex: 1,
     zIndex: 10000,
     justifyContent: 'flex-start',
     position: 'absolute',
     left: '75%',
     top: '75%',
-    
-    
-    // marginBottom: '5%',
+ 
   },
   addItem:{
    
@@ -204,17 +201,13 @@ const styles = StyleSheet.create({
     
   },
   feedItem:{
-    // flex: 4,
     width: '100%',
-    // height: '100%',
   },
   feedItemHeader:{
-    // width: '100%',
     backgroundColor: '#dedede',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    // marginTop: '50%',
   },
   feedItemCard:{
     width: '95%',
@@ -253,6 +246,11 @@ const styles = StyleSheet.create({
   taskTextField:{
     fontSize: 20,
     width: '50%',
+    color:'#000',
+  },
+  taskCompleteText:{
+    textDecorationLine: 'line-through',
+    color:'#6a6b6a',
   },
   taskCompleteStyle:{
     color: 'green',
@@ -260,7 +258,8 @@ const styles = StyleSheet.create({
   },
   taskIncompleteStyle:{
     color:'gray',
-  }
+  },
+  
 
 })
 
