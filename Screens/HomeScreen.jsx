@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, ScrollView } from 'react-native' ;
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faBars, faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import NewTaskModal from './Modal/NewTaskModal';
+import SignOutModal from './Modal/SignOutModal';
 // import { StatusBar } from 'expo-status-bar';
 
 
@@ -10,12 +11,16 @@ import NewTaskModal from './Modal/NewTaskModal';
 const HomeScreen = () => {
   
   const [showModal, setShowModal] = useState(false);
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
   const [taskListData, setTaskListData] = useState([]);
   const [objTask, setObjTask] = useState({});
   
 
   const closeModal = () => {
     setShowModal(false);
+  }
+  const closeSignOutModal = () => {
+    setShowSignOutModal(false);
   }
 
   const addTaskHandler = (taskData) => {
@@ -77,6 +82,7 @@ const HomeScreen = () => {
               icon={faBars} 
               size={30} 
               color="white"
+              onPress={()=>setShowSignOutModal(true)}
             />
             {/* option breadcrum goes here */}
           </View>
@@ -152,6 +158,11 @@ const HomeScreen = () => {
           <NewTaskModal 
             closeModal={closeModal} 
             addTaskHandler={ addTaskHandler }/>
+      </Modal>
+      <Modal visible={showSignOutModal} animationType="slide" transparent={true}>
+          <SignOutModal 
+            closeSignOutModal={closeSignOutModal} 
+          />
       </Modal>
       
     </View>

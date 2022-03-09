@@ -32,7 +32,7 @@ const LoginScreen = () => {
         signInWithEmailAndPassword(auth,email,password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                alert('loggedin as', user.email);
+                
             })
             .catch((error)=>{
                 alert(error.message);
