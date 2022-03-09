@@ -22,7 +22,6 @@ const LoginScreen = () => {
         createUserWithEmailAndPassword(auth,email,password)
             .then((userCredential) => {
                 const user = userCredential.user;
-        
             })
             .catch((error)=>{
                 alert(error.message);

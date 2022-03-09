@@ -59,6 +59,8 @@ const HomeScreen = () => {
 
   }
 
+  
+
 
   return (
     
@@ -71,7 +73,11 @@ const HomeScreen = () => {
 
         <View style ={styles.headerOptions}>
           <View >
-            <FontAwesomeIcon icon={faBars} size={30} color="white" />
+            <FontAwesomeIcon
+              icon={faBars} 
+              size={30} 
+              color="white"
+            />
             {/* option breadcrum goes here */}
           </View>
       
@@ -79,8 +85,9 @@ const HomeScreen = () => {
       </View>
       
       <View style ={styles.feedContainer}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollChildContent}>
         <View style={styles.feedItem}>
+        
           {/* rendering thorough the task object */}
           
           {Object.keys(objTask).map((key,index)=>{
@@ -126,7 +133,7 @@ const HomeScreen = () => {
             )
             
           })} 
-         
+        
         </View>
       </ScrollView>
         <View style={styles.addItemContainer}>
@@ -140,7 +147,7 @@ const HomeScreen = () => {
           </View>
         </View>
       </View>
-      
+ 
       <Modal visible={showModal} animationType="slide" transparent={true}>
           <NewTaskModal 
             closeModal={closeModal} 
@@ -214,6 +221,7 @@ const styles = StyleSheet.create({
   },
   feedItem:{
     width: '100%',
+   
   },
   feedItemHeader:{
     backgroundColor: '#dedede',
@@ -246,7 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     width:'30%',
-    marginRight: '15%',
+    marginRight: '5%',
   },
   taskDateText:{
     fontSize: 14,
@@ -271,6 +279,9 @@ const styles = StyleSheet.create({
   },
   taskIncompleteStyle:{
     color:'gray',
+  },
+  scrollChildContent:{
+    paddingBottom: '50%',
   },
   
 
