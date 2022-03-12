@@ -7,7 +7,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import  uuid  from 'react-native-uuid';
 
 const NewTaskModal = ({closeModal, addTaskHandler}) => {
-    // const [taskData, setTaskData] = useState();
+   
     const [taskText, setTaskText] = useState('');
     const [date,setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -35,10 +35,9 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
         let formatDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1)  +'/' + tempDate.getFullYear(); 
         let formatTime = tempDate.getHours() + ':' + tempDate.getMinutes();
         setTime(currentDate.toTimeString().substring(0,5));
-        // console.log(currentDate.toTimeString().substring(0,5));
+    
         setText(formatDate+' @ '+formatTime);
-        // console.log(formatDate+'\n'+formatTime);
-        // console.log(date);
+       
     }
 
     const showMode = (currentMode) =>{
@@ -46,17 +45,7 @@ const NewTaskModal = ({closeModal, addTaskHandler}) => {
         setMode(currentMode);
     }
 
-    // const renderLabel = () => {
-    //     if (priority || isFocus) {
-    //       return (
-    //         <Text style={[styles.label, isFocus && { color: 'white' }]}>
-    //           Choose Priority
-    //         </Text>
-    //       );
-    //     }
-    //     return null;
-    // };
-  
+
 
     return (
         <KeyboardAvoidingView

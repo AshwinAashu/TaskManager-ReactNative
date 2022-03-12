@@ -119,7 +119,7 @@ const HomeScreen = () => {
                               handleUpdateTask(tasks.taskId)
                             }}
                             style={tasks.taskStatus ? styles.taskCompleteStyle: styles.taskIncompleteStyle}
-                            // color={ tasks.taskStatus ?  '#87ffb5' : 'gray'} 
+                            
                           />
                           <FontAwesomeIcon
                             icon={faTrash}
